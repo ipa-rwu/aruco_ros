@@ -21,6 +21,14 @@ Changelog for package aruco
 * forcing opencv3 build for kinetic
 * Contributors: Andrea Ponza, Bence Magyar, Christopher Hrabia, Jordi Pages, Victor Lopez
 
+5.0.2 (2023-03-20)
+------------------
+
+5.0.1 (2023-03-06)
+------------------
+* remove compile options for warnings
+* Contributors: Noel Jimenez
+
 5.0.0 (2023-02-08)
 ------------------
 * fixed cornerUpsample slicing bug issue
