@@ -3,7 +3,11 @@
 #include <iostream>
 
 #include "aruco_ros/aruco_ros_utils.hpp"
+#if __has_include("cv_bridge/cv_bridge.hpp")
+#include "cv_bridge/cv_bridge.hpp"
+#else
 #include "cv_bridge/cv_bridge.h"
+#endif
 #include "opencv4/opencv2/calib3d.hpp"
 #include "rclcpp/logging.hpp"
 #include "tf2/transform_datatypes.h"

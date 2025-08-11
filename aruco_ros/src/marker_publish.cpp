@@ -39,7 +39,11 @@
 #include "aruco_ros/aruco_ros_utils.hpp"
 #include "aruco_msgs/msg/marker_array.hpp"
 
+#if __has_include("cv_bridge/cv_bridge.hpp")
+#include "cv_bridge/cv_bridge.hpp"
+#else
 #include "cv_bridge/cv_bridge.h"
+#endif
 #include "image_transport/image_transport.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp/wait_for_message.hpp"
@@ -55,7 +59,7 @@ using namespace std::chrono_literals;
 class ArucoMarkerPublisher : public rclcpp::Node
 {
 private:
-  rclcpp::Node::SharedPtr subNode;
+  rclcpp::Node::SharedPtr subNode_;
   // ArUco stuff
   aruco::MarkerDetector mDetector_;
   aruco::CameraParameters camParam_;
@@ -92,7 +96,7 @@ public:
 
   bool setup()
   {
-    subNode = this->create_sub_node(this->get_name());
+    subNode_ = this->create_sub_node(this->get_name());
     // Declare node parameters
     this->declare_parameter<double>("marker_size", 0.05);
     this->declare_parameter<std::string>("reference_frame", "");
@@ -132,9 +136,9 @@ public:
 
     image_pub_ = it_->advertise(this->get_name() + std::string("/result"), 1);
     debug_pub_ = it_->advertise(this->get_name() + std::string("/debug"), 1);
-    marker_pub_ = subNode->create_publisher<aruco_msgs::msg::MarkerArray>("markers", 100);
+    marker_pub_ = subNode_->create_publisher<aruco_msgs::msg::MarkerArray>("markers", 100);
     marker_list_pub_ =
-      subNode->create_publisher<std_msgs::msg::UInt32MultiArray>("markers_list", 10);
+      subNode_->create_publisher<std_msgs::msg::UInt32MultiArray>("markers_list", 10);
 
     marker_msg_ = aruco_msgs::msg::MarkerArray::Ptr(new aruco_msgs::msg::MarkerArray());
     marker_msg_->header.frame_id = reference_frame_;
